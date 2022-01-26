@@ -9,7 +9,7 @@ abecedario = list(string.ascii_lowercase+'ñ') # excluye caracteres extraños/de
 nLetras    = 5 # largo de la palabra target y de todas las palabras que podrán ser input del jugador
 nIntentos  = 6 # n° de intentos permitidos, incluyendo el primero
 dificil    = False # Flase baja dificultad, True alta dificultad (requiere usar todas las pistas disponibles en adivinaciones sucesivas) (opcional)
-diaria     = True # (opcional)
+diaria     = False # (opcional)
 # Si diaria = True, se fija random.seed() con un identificador único del día actual. La palabra target es invariante durante el día entero
 # Si diaria = False, la palabra target es elegida al azar en cada ejecución, independientemente de la fecha
 
@@ -131,7 +131,7 @@ def semillaDiaria():
     return id
 
 def jugarPartida(nLetras, nIntentos, diccionario, abecedario, diaria):
-    random.seed(semillaDiaria()*diaria)
+    if diaria: random.seed(semillaDiaria())
     subdicc   = generarSubdiccionario(diccionario, abecedario, nLetras)
     target    = palabraTarget(subdicc) 
     repetidas = []
@@ -190,7 +190,7 @@ def jugarIntento(target, subdicc, abecedario, repetidas, dificil = 0, prevInput 
     return input, comparacion
 
 def jugarPartida(nLetras, nIntentos, diccionario, abecedario, diaria = True, dificil = False):
-    random.seed(semillaDiaria()*diaria)
+    if diaria: random.seed(semillaDiaria())
     subdicc     = generarSubdiccionario(diccionario, abecedario, nLetras)
     target      = palabraTarget(subdicc)
     repetidas   = []
