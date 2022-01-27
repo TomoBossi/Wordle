@@ -65,17 +65,14 @@ def palabraTarget(subdicc):
 def comparar(target, input):
     comparacion = [-1] * len(target)
     rep = {letra: target.count(letra) for letra in target}
-
     for i, letraInput in enumerate(input): # 1er loop, para letras bien ubicadas (verde, 1)
         if letraInput == target[i]:
             rep[letraInput] -= 1
             comparacion[i] = 1
-    
     for i, letraInput in enumerate(input): # 2do loop, para letras no tan bien ubicadas (amarillo, 0)
         if letraInput in target and rep[letraInput] and comparacion[i] != 1:
             rep[letraInput] -= 1
             comparacion[i] = 0
-
     return comparacion
 
 # print(comparar('xxxxx', 'xxxxx'), # [ 1,  1,  1,  1,  1]
@@ -90,7 +87,6 @@ def mostrarPistas(input, comparacion):
         pistas += '+'*(ubicacion==1) + '-'*(ubicacion==0) + '_'*(ubicacion==-1)
     print(input)
     print(pistas)
-    return input, pistas
 
 # mostrarPistas('patos', comparar('casio', 'patos')) # patos
 #                                                    # _+_--
@@ -123,11 +119,8 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario):
         print('#### Intento '+str(i+1)+' ####')
         victoria = jugarIntento(target, subdicc, abecedario, repetidas)
         i += 1
-
-    if victoria:
-        print('Ganaste en '+str(i)+' intentos!')
-    else:
-        print('F. La palabra era '+target+'.')
+    if victoria: print('Ganaste en '+str(i)+' intentos!')
+    else: print('F. La palabra era '+target+'.')
     return victoria
 
 # 15 (opcional) Setear la semilla diaria, agregar variable diaria en # 1
@@ -147,7 +140,6 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario, diaria):
         print('#### Intento '+str(i+1)+' ####')
         victoria = jugarIntento(target, subdicc, abecedario, repetidas)
         i += 1
-
     if victoria: print('Ganaste en '+str(i)+' intentos!')
     else: print('F. La palabra era '+target+'.')
     return victoria
@@ -157,14 +149,14 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario, diaria):
 # Las letras en posicion correcta deben permanecer en posicion
 # Las letras en posicion no tan correcta deben utilizarse en como minimo igual cantidad de veces que la cantidad de veces que aparecen no tan bien ubicadas en la pista
 # Por lo tanto se requerirá una constancia de la posición y un contador de letras, de forma analoga a lo hecho para comparar()
-def contarLetrasResaltadas(input, comparacion, tipo):
+def contarLetrasPistas(input, comparacion, tipo):
     inputFiltrado = [letra for i, letra in enumerate(input) if comparacion[i] == tipo]
     return {letra: inputFiltrado.count(letra) for letra in inputFiltrado}
 
 def usaPistas(target, input, prevInput):
     pistas        = comparar(target, prevInput)
-    letrasFijas   = contarLetrasResaltadas(prevInput, pistas, 1)
-    letrasMoviles = contarLetrasResaltadas(prevInput, pistas, 0)
+    letrasFijas   = contarLetrasPistas(prevInput, pistas, 1)
+    letrasMoviles = contarLetrasPistas(prevInput, pistas, 0)
     for i, ubicacion in enumerate(pistas):
         if ubicacion == 1:
             if input[i] == prevInput[i]:
@@ -201,7 +193,7 @@ def jugarIntento(target, subdicc, abecedario, repetidas, dificil):
     repetidas.append(input) # repetidas es modificada in-place
     comparacion = comparar(target, input)
     mostrarPistas(input, comparacion)
-    return comparacion
+    return target == input
 
 def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, diaria = True):
     if diaria:  random.seed(semillaDiaria())
@@ -212,10 +204,8 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, d
     i = 0
     while not victoria and i < nIntentos:
         print('#### Intento '+str(i+1)+' ####')
-        comparacion = jugarIntento(target, subdicc, abecedario, repetidas, dificil)
-        victoria    = all([ubicacion == 1 for ubicacion in comparacion])
+        victoria = jugarIntento(target, subdicc, abecedario, repetidas, dificil)
         i += 1
-
     if victoria: print('Ganaste en '+str(i)+' intentos!')
     else: print('F. La palabra era '+target+'.')
     return victoria
@@ -245,6 +235,6 @@ def jugarIntento(target, subdicc, abecedario, repetidas, dificil):
         inputValido = esValido(input, subdicc, abecedario, repetidas, target, dificil)
     repetidas.append(input) # repetidas es modificada in-place
     imprimirHistorial(target, repetidas)
-    return comparar(target, input)
+    return target == input
 
 jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
