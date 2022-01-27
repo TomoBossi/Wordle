@@ -230,7 +230,6 @@ def imprimirHistorial(target, repetidas):
         comparacion = comparar(target, input)
         mostrarPistas(input, comparacion)
     print('')
-    return comparacion
 
 def jugarIntento(target, subdicc, abecedario, repetidas, dificil):
     input       = pedirPalabra()
@@ -246,7 +245,6 @@ def jugarIntento(target, subdicc, abecedario, repetidas, dificil):
         inputValido = esValido(input, subdicc, abecedario, repetidas, target, dificil)
     repetidas.append(input) # repetidas es modificada in-place
     imprimirHistorial(target, repetidas)
-    comparacion = comparar(target, input)
-    return comparacion
+    return comparar(target, input)
 
 jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
