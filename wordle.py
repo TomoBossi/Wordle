@@ -58,7 +58,7 @@ def procesar(palabra):
 
 # 6 Pedir input del jugador y procesarlo
 def pedirPalabra():
-    return procesar(str(input('Ingrese una palabra: ')))
+    return procesar(str(input('Ingresá una palabra: ')))
 
 
 
@@ -221,10 +221,11 @@ def usaPistas(target, input, prevInput):
 
 def esValido(input, subdicc, abecedario, historial, target, dificil):
     valido = [*esFormable(input, abecedario, len(subdicc[0])), input in subdicc]
-    if historial: 
-        valido.append(input not in historial)
-        if dificil: 
-            valido.append(usaPistas(target, input, historial[-1]))
+    if all(valido):
+        if historial: 
+            valido.append(input not in historial)
+            if dificil: 
+                valido.append(usaPistas(target, input, historial[-1]))
     return valido
 
 
@@ -315,8 +316,8 @@ def jugarIntento(target, subdicc, abecedario, historial, dificil):
 
 # Jugar denuevo
 def jugarDenuevo(nLetras, nIntentos, diccionario, abecedario, dificil, diaria):
-    denuevo = str(input('¿Querés volver a jugar? (y/n) '))
-    if denuevo == 'y':
+    denuevo = str(input('¿Querés volver a jugar? (y/n) ')) == 'y'
+    if denuevo:
         print('')
         jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
 
@@ -332,7 +333,7 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, d
 
     i = 0
     while not victoria and i < nIntentos:
-        print('#### Intento '+str(i+1)+' ####')
+        print('### Intento '+str(i+1)+'/'+str(nIntentos)+' ###')
         victoria = jugarIntento(target, subdicc, abecedario, historial, dificil)
         i += 1
 
@@ -347,4 +348,15 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, d
 
 
 if __name__ == '__main__':
+
+    default = str(input('¿Querés jugar con las reglas por defecto? (y/n) ')) == 'y'
+    if not default:
+        nLetras = int(input('Elegí el número de letras: '))
+        while nLetras not in list(range(4, 16)): # Rango razonable
+            print(colored('Usá un valor más razonable.', 'red'))
+            nLetras = int(input('Elegí el número de letras: '))
+        nIntentos = abs(int(input('Elegí el número de intentos: ')))
+        diaria = str(input('¿Querés jugar usando la palabra secreta del día? (y/n) ')) == 'y'
+        dificil = str(input('¿Querés jugar usando la dificultad alta? (y/n) ')) == 'y'
+        
     jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
