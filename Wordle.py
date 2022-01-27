@@ -245,7 +245,8 @@ def jugarIntento(target, subdicc, abecedario, repetidas, dificil):
         input       = pedirPalabra()
         inputValido = esValido(input, subdicc, abecedario, repetidas, target, dificil)
     repetidas.append(input) # repetidas es modificada in-place
-    comparacion = imprimirHistorial(target, repetidas)
+    imprimirHistorial(target, repetidas)
+    comparacion = comparar(target, input)
     return comparacion
 
 jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
