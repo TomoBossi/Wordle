@@ -2,6 +2,7 @@ import datetime
 import random
 import string
 import os
+from termcolor import colored # pip install termcolor
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 # 1 Setear parámetros
@@ -273,6 +274,16 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, d
 
 # 17 Go off
 # Mejores impresiones en consola
+def mostrarPistas(input, comparacion):
+    pistas = ''
+    for i, letra in enumerate(input.upper()):
+        pistas += (colored(letra, 'green')  + ' ') * (comparacion[i] ==  1)
+        pistas += (colored(letra, 'yellow') + ' ') * (comparacion[i] ==  0)
+        pistas += (colored(letra, 'white')  + ' ') * (comparacion[i] == -1)
+    print(pistas)
+
+
+
 def imprimirHistorial(target, historial):
     print('')
     for input in historial:
@@ -292,7 +303,7 @@ def jugarIntento(target, subdicc, abecedario, historial, dificil):
                    'Tenés que usar todas las pistas disponibles!'] # Lista de errores jerarquizados
 
     while not all(inputValido):
-        print(errores[inputValido.index(False)], 'Intentá nuevamente.')
+        print(colored(errores[inputValido.index(False)]+' Intentá nuevamente.', 'red'))
         input       = pedirPalabra()
         inputValido = esValido(input, subdicc, abecedario, historial, target, dificil)
 
@@ -302,4 +313,38 @@ def jugarIntento(target, subdicc, abecedario, historial, dificil):
 
 
 
-jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
+# Jugar denuevo
+def jugarDenuevo(nLetras, nIntentos, diccionario, abecedario, dificil, diaria):
+    denuevo = str(input('¿Querés volver a jugar? (y/n) '))
+    if denuevo == 'y':
+        print('')
+        jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
+
+
+
+def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, diaria = True):
+    if diaria:  
+        random.seed(semillaDiaria())
+    subdicc   = generarSubdiccionario(diccionario, abecedario, nLetras)
+    target    = palabraTarget(subdicc)
+    historial = []
+    victoria  = False
+
+    i = 0
+    while not victoria and i < nIntentos:
+        print('#### Intento '+str(i+1)+' ####')
+        victoria = jugarIntento(target, subdicc, abecedario, historial, dificil)
+        i += 1
+
+    if victoria: 
+        print('Ganaste en '+str(i)+' intento'+'s'*(i>1)+'!')
+    else: 
+        print('F. La palabra era '+target+'.')
+    if not diaria:
+        jugarDenuevo(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
+    return victoria
+
+
+
+if __name__ == '__main__':
+    jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
