@@ -5,7 +5,7 @@ import os
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 # 1 Setear parámetros
-abecedario = list(string.ascii_lowercase+'ñ') # excluye caracteres extraños/decorados/numéricos
+abecedario = string.ascii_lowercase+'ñ' # excluye caracteres extraños/decorados/numéricos no deseados
 nLetras    = 5 # largo de la palabra target y de todas las palabras que podrán ser input del jugador
 nIntentos  = 6 # n° de intentos permitidos, incluyendo el primero
 dificil    = False # False baja dificultad, True alta dificultad (requiere usar todas las pistas disponibles en adivinaciones sucesivas) (opcional)
