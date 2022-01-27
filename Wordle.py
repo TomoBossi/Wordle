@@ -8,8 +8,8 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 abecedario = list(string.ascii_lowercase+'ñ') # excluye caracteres extraños/decorados/numéricos
 nLetras    = 5 # largo de la palabra target y de todas las palabras que podrán ser input del jugador
 nIntentos  = 6 # n° de intentos permitidos, incluyendo el primero
-dificil    = True # False baja dificultad, True alta dificultad (requiere usar todas las pistas disponibles en adivinaciones sucesivas) (opcional)
-diaria     = False # (opcional)
+dificil    = False # False baja dificultad, True alta dificultad (requiere usar todas las pistas disponibles en adivinaciones sucesivas) (opcional)
+diaria     = True # (opcional)
 # Si diaria = True, se fija random.seed() con un identificador único del día actual. La palabra target es invariante durante el día entero
 # Si diaria = False, la palabra target es elegida al azar en cada ejecución, independientemente de la fecha
 
@@ -173,10 +173,10 @@ def usaPistas(target, input, prevInput):
             letrasMoviles[input[i]] -= 1
     return not any(list(letrasFijas.values()) + list(letrasMoviles.values()))
 
-print(usaPistas('yyyyy', 'xxxxx', 'xxxxx'), # True
-      usaPistas('zxvyu', 'ywxzw', 'yxwww'), # False
-      usaPistas('yyyyy', 'yyxyy', 'xxyxx'), # False
-      usaPistas('zxywv', 'wzxyw', 'xyxzw')) # True
+# print(usaPistas('yyyyy', 'xxxxx', 'xxxxx'), # True
+#       usaPistas('zxvyu', 'ywxzw', 'yxwww'), # False
+#       usaPistas('yyyyy', 'yyxyy', 'xxyxx'), # False
+#       usaPistas('zxywv', 'wzxyw', 'xyxzw')) # True
 
 def esValido(input, subdicc, abecedario, repetidas, target, dificil):
     valido = [*esFormable(input, abecedario, len(subdicc[0])), input in subdicc]
@@ -248,4 +248,4 @@ def jugarIntento(target, subdicc, abecedario, repetidas, dificil):
     comparacion = imprimirHistorial(target, repetidas)
     return comparacion
 
-# jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
+jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
