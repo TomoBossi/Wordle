@@ -51,8 +51,8 @@ def pedirPalabra():
 
 # 7, 13 (optativo), 14 (optativo) Analizar si un input es válido (es de largo nLetras, se forma únicamente usando caracteres del abecedario, está en el (sub)diccionario y no está en la lista de inputs previos)
 # Output en orden: [Largo valido, caracteres validos, presente en diccionario, no repetida]
-def esValido(input, subdicc, abecedario, repetidas = []):
-    return esFormable(input, abecedario, len(subdicc[0])) + [(input in subdicc), input not in repetidas] # formato lista optativo
+def esValido(input, subdicc, abecedario, historial = []):
+    return esFormable(input, abecedario, len(subdicc[0])) + [(input in subdicc), input not in historial] # formato lista optativo
 
 # 8 Elegir palabra target/objetivo
 def palabraTarget(subdicc):
@@ -92,9 +92,9 @@ def mostrarPistas(input, comparacion):
 #                                                    # _+_--
 
 # 11, 13 (optativo), 14 (optativo) Jugar un intento
-def jugarIntento(target, subdicc, abecedario, repetidas = []):
+def jugarIntento(target, subdicc, abecedario, historial = []):
     input       = pedirPalabra()
-    inputValido = esValido(input, subdicc, abecedario, repetidas)
+    inputValido = esValido(input, subdicc, abecedario, historial)
     errores     = ['Tu palabra no es del largo correcto.',
                    'Tu palabra tiene algún caracter extraño.',
                    'Tu palabra no está en el diccionario.',
@@ -102,8 +102,8 @@ def jugarIntento(target, subdicc, abecedario, repetidas = []):
     while not all(inputValido):
         print(errores[inputValido.index(False)], 'Intentá nuevamente.')
         input       = pedirPalabra()
-        inputValido = esValido(input, subdicc, abecedario, repetidas)
-    repetidas.append(input) # repetidas es modificada in-place
+        inputValido = esValido(input, subdicc, abecedario, historial)
+    historial.append(input) # historial es modificada in-place
     comparacion = comparar(target, input)
     mostrarPistas(input, comparacion)
     return target == input
@@ -112,12 +112,12 @@ def jugarIntento(target, subdicc, abecedario, repetidas = []):
 def jugarPartida(nLetras, nIntentos, diccionario, abecedario):
     subdicc   = generarSubdiccionario(diccionario, abecedario, nLetras)
     target    = palabraTarget(subdicc) 
-    repetidas = []
+    historial = []
     victoria  = False
     i = 0
     while not victoria and i < nIntentos:
         print('#### Intento '+str(i+1)+' ####')
-        victoria = jugarIntento(target, subdicc, abecedario, repetidas)
+        victoria = jugarIntento(target, subdicc, abecedario, historial)
         i += 1
     if victoria: print('Ganaste en '+str(i)+' intentos!')
     else: print('F. La palabra era '+target+'.')
@@ -133,12 +133,12 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario, diaria):
     if diaria:  random.seed(semillaDiaria())
     subdicc   = generarSubdiccionario(diccionario, abecedario, nLetras)
     target    = palabraTarget(subdicc) 
-    repetidas = []
+    historial = []
     victoria  = False
     i = 0
     while not victoria and i < nIntentos:
         print('#### Intento '+str(i+1)+' ####')
-        victoria = jugarIntento(target, subdicc, abecedario, repetidas)
+        victoria = jugarIntento(target, subdicc, abecedario, historial)
         i += 1
     if victoria: print('Ganaste en '+str(i)+' intentos!')
     else: print('F. La palabra era '+target+'.')
@@ -170,17 +170,17 @@ def usaPistas(target, input, prevInput):
 #       usaPistas('yyyyy', 'yyxyy', 'xxyxx'), # False
 #       usaPistas('zxywv', 'wzxyw', 'xyxzw')) # True
 
-def esValido(input, subdicc, abecedario, repetidas, target, dificil):
+def esValido(input, subdicc, abecedario, historial, target, dificil):
     valido = [*esFormable(input, abecedario, len(subdicc[0])), input in subdicc]
-    if repetidas: 
-        valido.append(input not in repetidas)
+    if historial: 
+        valido.append(input not in historial)
         if dificil: 
-            valido.append(usaPistas(target, input, repetidas[-1]))
+            valido.append(usaPistas(target, input, historial[-1]))
     return valido
 
-def jugarIntento(target, subdicc, abecedario, repetidas, dificil):
+def jugarIntento(target, subdicc, abecedario, historial, dificil):
     input       = pedirPalabra()
-    inputValido = esValido(input, subdicc, abecedario, repetidas, target, dificil)
+    inputValido = esValido(input, subdicc, abecedario, historial, target, dificil)
     errores     = ['Tu palabra no es del largo correcto.',
                    'Tu palabra tiene algún caracter extraño.',
                    'Tu palabra no está en el diccionario.',
@@ -189,8 +189,8 @@ def jugarIntento(target, subdicc, abecedario, repetidas, dificil):
     while not all(inputValido):
         print(errores[inputValido.index(False)], 'Intentá nuevamente.')
         input       = pedirPalabra()
-        inputValido = esValido(input, subdicc, abecedario, repetidas, target, dificil)
-    repetidas.append(input) # repetidas es modificada in-place
+        inputValido = esValido(input, subdicc, abecedario, historial, target, dificil)
+    historial.append(input) # historial es modificada in-place
     comparacion = comparar(target, input)
     mostrarPistas(input, comparacion)
     return target == input
@@ -199,12 +199,12 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, d
     if diaria:  random.seed(semillaDiaria())
     subdicc   = generarSubdiccionario(diccionario, abecedario, nLetras)
     target    = palabraTarget(subdicc)
-    repetidas = []
+    historial = []
     victoria  = False
     i = 0
     while not victoria and i < nIntentos:
         print('#### Intento '+str(i+1)+' ####')
-        victoria = jugarIntento(target, subdicc, abecedario, repetidas, dificil)
+        victoria = jugarIntento(target, subdicc, abecedario, historial, dificil)
         i += 1
     if victoria: print('Ganaste en '+str(i)+' intentos!')
     else: print('F. La palabra era '+target+'.')
@@ -214,16 +214,16 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, d
 
 # Mejores impresiones en consola
 
-def imprimirHistorial(target, repetidas):
+def imprimirHistorial(target, historial):
     print('')
-    for input in repetidas:
+    for input in historial:
         comparacion = comparar(target, input)
         mostrarPistas(input, comparacion)
     print('')
 
-def jugarIntento(target, subdicc, abecedario, repetidas, dificil):
+def jugarIntento(target, subdicc, abecedario, historial, dificil):
     input       = pedirPalabra()
-    inputValido = esValido(input, subdicc, abecedario, repetidas, target, dificil)
+    inputValido = esValido(input, subdicc, abecedario, historial, target, dificil)
     errores     = ['Tu palabra no es del largo correcto.',
                    'Tu palabra tiene algún caracter extraño.',
                    'Tu palabra no está en el diccionario.',
@@ -232,9 +232,9 @@ def jugarIntento(target, subdicc, abecedario, repetidas, dificil):
     while not all(inputValido):
         print(errores[inputValido.index(False)], 'Intentá nuevamente.')
         input       = pedirPalabra()
-        inputValido = esValido(input, subdicc, abecedario, repetidas, target, dificil)
-    repetidas.append(input) # repetidas es modificada in-place
-    imprimirHistorial(target, repetidas)
+        inputValido = esValido(input, subdicc, abecedario, historial, target, dificil)
+    historial.append(input) # historial es modificada in-place
+    imprimirHistorial(target, historial)
     return target == input
 
 jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
