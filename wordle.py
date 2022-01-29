@@ -159,10 +159,10 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario):
 
 # 15 (opcional) Setear la semilla diaria, agregar variable diaria en # 1
 def semillaDiaria(diaria):
-     semilla = int(time.time())//(60*60*24)
-     random.seed()
-     if diaria:
-         random.seed(semilla)
+    random.seed()
+    if diaria:
+        semilla = int(time.time())//(60*60*24)
+        random.seed(semilla)
 
 
 
