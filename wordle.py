@@ -1,4 +1,4 @@
-import datetime
+import time
 import random
 import string
 import os
@@ -158,16 +158,16 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario):
 
 
 # 15 (opcional) Setear la semilla diaria, agregar variable diaria en # 1
-def semillaDiaria():
-    hoy = datetime.datetime.today().replace(hour = 0, minute = 0, second = 0)
-    id  = int(datetime.datetime.timestamp(hoy))
-    return id
+def semillaDiaria(diaria):
+     semilla = int(time.time())//(60*60*24)
+     random.seed()
+     if diaria:
+         random.seed(semilla)
 
 
 
 def jugarPartida(nLetras, nIntentos, diccionario, abecedario, diaria):
-    if diaria:  
-        random.seed(semillaDiaria())
+    semillaDiaria(diaria) 
     subdicc   = generarSubdiccionario(diccionario, abecedario, nLetras)
     target    = palabraTarget(subdicc) 
     historial = []
@@ -252,8 +252,7 @@ def jugarIntento(target, subdicc, abecedario, historial, dificil):
 
 
 def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, diaria = True):
-    if diaria:  
-        random.seed(semillaDiaria())
+    semillaDiaria(diaria) 
     subdicc   = generarSubdiccionario(diccionario, abecedario, nLetras)
     target    = palabraTarget(subdicc)
     historial = []
@@ -324,8 +323,7 @@ def jugarDenuevo(nLetras, nIntentos, diccionario, abecedario, dificil, diaria):
 
 
 def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, diaria = True):
-    if diaria:  
-        random.seed(semillaDiaria())
+    semillaDiaria(diaria) 
     subdicc   = generarSubdiccionario(diccionario, abecedario, nLetras)
     target    = palabraTarget(subdicc)
     historial = []
