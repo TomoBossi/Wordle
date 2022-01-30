@@ -161,7 +161,7 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario):
 def semillaDiaria(diaria):
     random.seed()
     if diaria:
-        semilla = int(time.time())//(60*60*24)
+        semilla = int(time.time() - 3*60*60)//(60*60*24)
         random.seed(semilla)
 
 
