@@ -3,21 +3,6 @@ import random
 import string
 import os
 from termcolor import colored # pip install termcolor
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
-
-# 1 Setear parámetros
-abecedario = string.ascii_lowercase+'ñ' # excluye caracteres extraños/decorados/numéricos no deseados
-nLetras    = 5 # largo de la palabra target y de todas las palabras que podrán ser input del jugador
-nIntentos  = 6 # n° de intentos permitidos, incluyendo el primero
-dificil    = False # False baja dificultad, True alta dificultad (requiere usar todas las pistas disponibles en adivinaciones sucesivas) (opcional)
-diaria     = True # (opcional)
-# Si diaria = True, se fija random.seed() con un identificador único del día actual. La palabra target es invariante durante el día entero
-# Si diaria = False, la palabra target es elegida al azar en cada ejecución, independientemente de la fecha
-
-
-
-# 2 Cargar el diccionario
-diccionario = open('diccionario.txt').read().splitlines() # Debe estar en el mismo directorio que este archivo .py
 
 
 
@@ -347,6 +332,19 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, d
 
 if __name__ == '__main__':
 
+    # 1, 2, 15 (optativo), 16 (optativo) Inicializar variables
+    abecedario = string.ascii_lowercase+'ñ' # excluye caracteres extraños/decorados/numéricos no deseados
+    nLetras    = 5 # largo de la palabra target y de todas las palabras que podrán ser input del jugador
+    nIntentos  = 6 # n° de intentos permitidos, incluyendo el primero
+
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+    diccionario = open('diccionario.txt').read().splitlines() # Debe estar en el mismo directorio que este archivo .py
+    
+    dificil    = False # False baja dificultad, True alta dificultad (requiere usar todas las pistas disponibles en adivinaciones sucesivas)
+    diaria     = True  # Si diaria = True, se fija random.seed() con un identificador único del día actual. La palabra target es invariante durante el día entero
+                       # Si diaria = False, la palabra target es elegida al azar en cada ejecución, independientemente de la fecha
+
+    # Configuración
     default = str(input('¿Querés jugar con las reglas por defecto? (y/n) ')) == 'y'
     if not default:
         nLetras = int(input('Elegí el número de letras: '))
