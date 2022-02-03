@@ -333,12 +333,11 @@ def jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil = False, d
 if __name__ == '__main__':
 
     # 1, 2, 15 (optativo), 16 (optativo) Inicializar variables
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     abecedario = string.ascii_lowercase+'ñ' # excluye caracteres extraños/decorados/numéricos no deseados
     nLetras    = 5 # largo de la palabra target y de todas las palabras que podrán ser input del jugador
     nIntentos  = 6 # n° de intentos permitidos, incluyendo el primero
-
-    os.chdir(os.path.dirname(os.path.realpath(__file__)))
-    diccionario = open('diccionario.txt').read().splitlines() # Debe estar en el mismo directorio que este archivo .py
+    dicc       = open('diccionario.txt').read().splitlines() # Debe estar en el mismo directorio que este archivo .py
     
     dificil    = False # False baja dificultad, True alta dificultad (requiere usar todas las pistas disponibles en adivinaciones sucesivas)
     diaria     = True  # Si diaria = True, se fija random.seed() con un identificador único del día actual. La palabra target es invariante durante el día entero
@@ -355,4 +354,4 @@ if __name__ == '__main__':
         diaria = str(input('¿Querés jugar usando la palabra secreta del día? (y/n) ')) == 'y'
         dificil = str(input('¿Querés jugar usando la dificultad alta? (y/n) ')) == 'y'
         
-    jugarPartida(nLetras, nIntentos, diccionario, abecedario, dificil, diaria)
+    jugarPartida(nLetras, nIntentos, dicc, abecedario, dificil, diaria)
