@@ -344,14 +344,14 @@ if __name__ == '__main__':
                        # Si diaria = False, la palabra target es elegida al azar en cada ejecución, independientemente de la fecha
 
     # Configuración
-    default = str(input('¿Querés jugar con las reglas por defecto? (y/n) ')) == 'y'
+    default = str(input('¿Querés jugar con las reglas por defecto? (y/n) ')).lower() == 'y'
     if not default:
         nLetras = int(input('Elegí el número de letras: '))
         while nLetras not in list(range(4, 16)): # Rango razonable
             print(colored('Usá un valor más razonable.', 'red'))
             nLetras = int(input('Elegí el número de letras: '))
         nIntentos = abs(int(input('Elegí el número de intentos: ')))
-        diaria = str(input('¿Querés jugar usando la palabra secreta del día? (y/n) ')) == 'y'
-        dificil = str(input('¿Querés jugar usando la dificultad alta? (y/n) ')) == 'y'
+        diaria = str(input('¿Querés jugar usando la palabra secreta del día? (y/n) ')).lower() == 'y'
+        dificil = str(input('¿Querés jugar usando la dificultad alta? (y/n) ')).lower() == 'y'
         
     jugarPartida(nLetras, nIntentos, dicc, abecedario, dificil, diaria)
